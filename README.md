@@ -6,7 +6,7 @@ Player touch then screen to make Nyancat fly and avoid obstacles.
 
 The App made by Apple Xcode using swift 3.
 
-<img src='https://github.com/frhhh/Flappy-Nyancat-Go/blob/master/Flappy_Nyancat_Go_icon.png' width='100' alt='App icon' />
+<img src='https://github.com/frhhh/Flappy-Nyancat-Go/blob/master/Flappy_Nyancat_Go_icon.png' width='300' alt='App icon' />
 
 ## License
 
