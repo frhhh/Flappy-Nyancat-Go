@@ -1,6 +1,6 @@
 # Flappy-Nyancat-Go
 
-**Flappy Nyancat Go** is a iOS game app inspire by Flappy Bird and Nyancat. 
+**Flappy Nyancat Go** is an iOS game app inspire by Flappy Bird and Nyancat. 
 
 Player touch then screen to make Nyancat fly and avoid obstacles.
 
