@@ -9,13 +9,14 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import Social
 
 class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Thread.sleep(forTimeInterval: 1.5)
+        Thread.sleep(forTimeInterval: 1)
         
         if let scene = GameScene(fileNamed:"GameScene") {
             // Configure the view.
@@ -34,7 +35,7 @@ class GameViewController: UIViewController {
         }
     }
     
-    override var shouldAutorotate: Bool {
+        override var shouldAutorotate: Bool {
         return false  //disable totation
     }
     

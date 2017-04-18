@@ -5,9 +5,12 @@
 //  Created by Frank Hu on 2017/2/21.
 //  Copyright © 2017年 Weichu Hu. All rights reserved.
 //
-
+import Foundation
 import SpriteKit
 import AVFoundation
+import Social
+import UIKit
+
 //import GameplayKit
 
 struct GameObjects {
@@ -33,7 +36,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let scoreLb = SKLabelNode()
     
     var died = Bool()
-    var restart = SKSpriteNode()
+    var restart = SKSpriteNode(	)
+    var fb = SKSpriteNode()
     
     var playerBG = AVAudioPlayer()
     var playerJP = AVAudioPlayer()
@@ -79,6 +83,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+ 
+
+    
     
     func createScene() {
         
@@ -120,8 +127,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(Ground)
         
         //set up octocat image
-        Octocat = SKSpriteNode(imageNamed: "Nyancat")
-        Octocat.size = CGSize(width: 50, height: 30)
+        Octocat = SKSpriteNode(imageNamed: "pro-icon-1")
+        Octocat.size = CGSize(width: 45, height: 45)
         Octocat.position = CGPoint(x: self.frame.width / 2 - Octocat.frame.width, y: self.frame.height / 2)
         
         Octocat.physicsBody = SKPhysicsBody(circleOfRadius: Octocat.frame.height / 2)
@@ -152,6 +159,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         restart.setScale(0)
         self.addChild(restart)
         restart.run(SKAction.scale(to: 1.0, duration: 0.3))
+        
+    }
+    
+    func share(){
+        self.playerStop.play()
+        self.playerBG.stop()
+        
+        fb = SKSpriteNode(imageNamed: "facebook")
+        
+        fb.size = CGSize(width: 200, height: 100)
+        fb.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2 - 120)
+        fb.zPosition = 6
+        fb.setScale(0)
+        self.addChild(fb)
+        fb.run(SKAction.scale(to: 1.0, duration: 0.3))
         
     }
     
@@ -187,6 +209,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if died == false{
                 died = true
                 createBTN()
+                share()
             }
         }
         else if firstBody.categoryBitMask == GameObjects.Octocat && secondBody.categoryBitMask == GameObjects.Ground || firstBody.categoryBitMask == GameObjects.Ground && secondBody.categoryBitMask == GameObjects.Octocat{
@@ -201,6 +224,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if died == false{
                 died = true
                 createBTN()
+                share()
             }
         }
     }
@@ -265,6 +289,51 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(wallPair)
     }
     
+    
+    func shareScore(scene: SKScene) {
+        let postText: String = "Check out my score! I got \(score)! Can you beat it?"
+        let postImage: UIImage = getScreenshot(scene: scene)
+        let activityItems = [postText, postImage] as [Any]
+        let activityController = UIActivityViewController(
+            activityItems: activityItems,
+            applicationActivities: nil
+        )
+        
+        let controller: UIViewController = scene.view!.window!.rootViewController!
+        
+        controller.present(
+            activityController,
+            animated: true,
+            completion: nil
+        )
+    }
+    
+    func getScreenshot(scene: SKScene) -> UIImage {
+//        let snapshotView = scene.view!.snapshotView(afterScreenUpdates: true)
+//        let bounds = UIScreen.main.bounds
+//        
+//        UIGraphicsBeginImageContextWithOptions(bounds.size, false, 1.0)
+//        
+//        snapshotView?.drawHierarchy(in: bounds, afterScreenUpdates: true)
+//        
+//        let screenshotImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+//        
+//        UIGraphicsEndImageContext()
+        //UIImageWriteToSavedPhotosAlbum(screenshotImage, nil, nil, nil)
+
+        UIGraphicsBeginImageContextWithOptions(self.view!.bounds.size, false, 1)
+        self.view?.drawHierarchy(in: (self.view?.bounds)!, afterScreenUpdates: true)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image!
+    }
+
+
+
+
+
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameStart == false{
             
@@ -293,7 +362,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
             playerJP.play()
             Octocat.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-            Octocat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 18))
+            Octocat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 30))
         }
         else{
             
@@ -303,7 +372,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             else{
                 playerJP.play()
                 Octocat.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
-                Octocat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 18))
+                Octocat.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 30))
             }
             
         }
@@ -316,11 +385,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     restartScene()
                     
                 }
+            if died == true{
+                if fb.contains(location){
+                    shareScore(scene: self)
+                }
+                
             }
         }
     }
+        
+        
     
-    override func update(_ currentTime: TimeInterval) {
+    
+    func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
         
         if gameStart == true{
@@ -342,4 +419,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+}
+
 }
