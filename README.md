@@ -1,8 +1,8 @@
-# Flappy-Nyancat-Go
+# Jump-Jump-Frank
 
-**Flappy Nyancat Go** is an iOS game app inspire by Flappy Bird and Nyancat. 
+**Jump-Jump-Frank** is an iOS game app inspire by Flappy Bird. 
 
-Player touch then screen to make Nyancat fly and avoid obstacles.
+Player touch then screen to make Frank fly and avoid obstacles.
 
 The App made by Apple Xcode using swift 3.
 
