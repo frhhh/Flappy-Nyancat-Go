@@ -7,4 +7,6 @@ target 'Flappy Nyancat' do
 
   # Pods for Flappy Nyancat
 
+	pod 'Firebase/Core'
+
 end
